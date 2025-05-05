@@ -35,13 +35,15 @@ const TrainingList = () => {
             field: "date", 
             headerName: "Date", 
             flex: 1,
+            filter: true,
             valueFormatter: (params) => dayjs(params.value).format("DD.MM.YYYY HH:mm")
         },
-        { field: "duration", headerName: "duration", flex: 1},
+        { field: "duration", headerName: "duration", filter: true, flex: 1},
         { 
             headerName: "Customer",
             valueGetter: (params) => `${params.data.customer.firstname || ''} ${params.data.customer.lastname || ''}`,
-            flex: 1
+            flex: 1,
+            filter: true
         },
     ]);
   
