@@ -2,21 +2,17 @@ import { useEffect, useState } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { ColDef, ICellRendererParams, themeMaterial } from 'ag-grid-community';
 import { Button, Typography, Container } from '@mui/material';
-import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
-import { Customer, Training } from '../types';
+import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Training } from '../types';
 import { getTrainings } from './apiFuncs';
 import dayjs from 'dayjs';
 
-type TrainingWithCustomer = {
-    training: Training;
-    customer: Customer;
-  };
+
 
 const TrainingList = () => {
 
     const [trainings, setTrainings] = useState<Training[]>([]);
 
-    const [open, setopen] = useState(false);
     
     // table data
     const [colDefs] = useState<ColDef[]>([
@@ -33,17 +29,17 @@ const TrainingList = () => {
         { field: "activity", headerName: "Activity", filter: true, flex: 1},
         {
             field: "date", 
-            headerName: "Date", 
+            headerName: "Date",
+            filter: true, 
             flex: 1,
-            filter: true,
             valueFormatter: (params) => dayjs(params.value).format("DD.MM.YYYY HH:mm")
         },
-        { field: "duration", headerName: "duration", filter: true, flex: 1},
+        { field: "duration", headerName: "duration", flex: 1, filter: true},
         { 
             headerName: "Customer",
+            filter: true,
             valueGetter: (params) => `${params.data.customer.firstname || ''} ${params.data.customer.lastname || ''}`,
             flex: 1,
-            filter: true
         },
     ]);
   
@@ -85,7 +81,7 @@ const TrainingList = () => {
         });
     
         if (!response.ok) {
-            throw new Error("Failed to delete the customer");
+            throw new Error("Failed to delete the training");
         }
         
         setTrainings((filteredTainings) =>
